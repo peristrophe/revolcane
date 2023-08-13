@@ -20,10 +20,6 @@ RUN set -ex && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN cargo install sccache
-
-ENV PATH ${PATH}:${HOME}/mold/bin
-
 RUN set -ex && \
     curl -sSL https://raw.githubusercontent.com/peristrophe/dotfiles/master/.vimrc > ${HOME}/.vimrc && \
     git clone https://github.com/VundleVim/Vundle.vim.git ${HOME}/.vim/bundle/Vundle.vim && \
@@ -31,6 +27,10 @@ RUN set -ex && \
 
 RUN echo "PS1='\[\e[1;33m\]\u@\[\e[m\]\[\e[1;32m\]\h:\[\e[m\]\[\e[1;36m\]\w$ \[\e[m\]'" >> /root/.bashrc && \
     echo "alias la='ls -lA --color=auto'" >> /root/.bashrc
+
+RUN cargo install sccache
+
+ENV RUSTC_WRAPPER=/usr/local/cargo/bin/sccache
 
 # ================================================== install mold ==================================================
 
@@ -48,5 +48,6 @@ RUN git checkout v2.0.0 && \
 # RUN curl -sSL https://github.com/rui314/mold/releases/download/v2.0.0/mold-2.0.0-x86_64-linux.tar.gz -o mold-2.0.0-x86_64-linux.tar.gz && \
 #     tar zxvf mold-2.0.0-x86_64-linux.tar.gz && \
 #     mv mold-2.0.0-x86_64-linux mold
+# 
+# ENV PATH ${PATH}:${HOME}/mold/bin
 
-ENV RUSTC_WRAPPER=/usr/local/cargo/bin/sccache
