@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS "role_users" (
 );
 
 CREATE TABLE IF NOT EXISTS "organization_users" (
-    "org_id"   text,
-    "user_id"           text,
+    "org_id"    text,
+    "user_id"   text,
     PRIMARY KEY ("org_id","user_id")
 );
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS "organization_users" (
 CREATE TABLE IF NOT EXISTS "boards" (
     "id"              uuid DEFAULT uuid_generate_v4(),
     "title"           text NOT NULL,
-    "owner_org_id"   uuid,
+    "owner_org_id"    uuid,
     "created_at"      timestamptz NOT NULL,
     "updated_at"      timestamptz NOT NULL,
     "deleted_at"      timestamptz DEFAULT null,
