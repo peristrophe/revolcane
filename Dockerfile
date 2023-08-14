@@ -13,6 +13,7 @@ RUN set -ex && \
             jq \
             curl \
             git \
+            postgresql-client \
             pkg-config \
             libssl-dev \
             && \
@@ -26,7 +27,9 @@ RUN set -ex && \
     vim +PluginInstall +qall
 
 RUN echo "PS1='\[\e[1;33m\]\u@\[\e[m\]\[\e[1;32m\]\h:\[\e[m\]\[\e[1;36m\]\w$ \[\e[m\]'" >> /root/.bashrc && \
-    echo "alias la='ls -lA --color=auto'" >> /root/.bashrc
+    echo "alias la='ls -lA --color=auto'" >> /root/.bashrc && \
+    echo "[dev]\nhost=172.56.57.100\nport=5432\nuser=test\ndbname=revolcane\n" > /root/.pg_service.conf && \
+    echo "[init-dev]\nhost=172.56.57.100\nport=5432\nuser=test\n" >> /root/.pg_service.conf
 
 RUN cargo install sccache
 
