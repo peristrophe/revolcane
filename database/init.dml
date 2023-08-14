@@ -1,0 +1,334 @@
+INSERT INTO "users" (
+  "id",
+  "email",
+  "password",
+  "salt",
+  "name",
+  "birthday",
+  "location",
+  "status",
+  "created_at",
+  "updated_at",
+  "deleted_at"
+) VALUES (
+  'bedf6d44-b54a-4ecb-a308-3b120d50cdc8',
+  'hoge@example.com',
+  '19a0cbfcae293d7e3204ea6baabb5a7b184594ca24855836a1ab8d91da47a262',
+  '69467b54-30f1-4c0b-a00d-db3a27c4a5de',
+  'hoge',
+  DEFAULT,
+  'Tokyo',
+  '0',
+  '2023-08-14 05:01:19.547',
+  '2023-08-14 05:01:19.547',
+  DEFAULT
+),(
+  'bfd4d0d3-535c-4fdf-bdf4-4213e98bfe83',
+  'fuga@example.com',
+  'e6e328b67815c9e7094f125a63398f4bc3ac60ca85fec09030f9ce10509df3be',
+  '2e3bc31d-26df-4492-8390-2e429e497108',
+  'fuga',
+  '2020-02-22 00:00:00',
+  '',
+  '2',
+  '2023-08-14 05:01:19.547',
+  '2023-08-14 05:01:19.547',
+  DEFAULT
+) RETURNING "id","salt","birthday","location","deleted_at";
+
+
+
+INSERT INTO "organization_users" (
+  "org_id",
+  "user_id"
+) VALUES (
+  '78abae0e-3c5a-488e-ac48-8d9842d704f0',
+  'bedf6d44-b54a-4ecb-a308-3b120d50cdc8'
+),(
+  '78abae0e-3c5a-488e-ac48-8d9842d704f0',
+  'bfd4d0d3-535c-4fdf-bdf4-4213e98bfe83'
+) ON CONFLICT DO NOTHING RETURNING "org_id","user_id";
+
+
+
+INSERT INTO "organizations" (
+  "id",
+  "name",
+  "owner_id",
+  "created_at",
+  "updated_at",
+  "deleted_at"
+) VALUES (
+  '78abae0e-3c5a-488e-ac48-8d9842d704f0',
+  'hogefuga family',
+  'bedf6d44-b54a-4ecb-a308-3b120d50cdc8',
+  '2023-08-14 05:01:19.569',
+  '2023-08-14 05:01:19.569',
+  DEFAULT
+) ON CONFLICT DO NOTHING RETURNING "id","deleted_at";
+
+
+
+INSERT INTO "roles" (
+  "id",
+  "name",
+  "org_id",
+  "created_at",
+  "updated_at",
+  "deleted_at"
+) VALUES (
+  'f8838633-dd0a-45ae-b96c-c2aab514116f',
+  'Mother',
+  '78abae0e-3c5a-488e-ac48-8d9842d704f0',
+  '2023-08-14 05:01:19.575',
+  '2023-08-14 05:01:19.575',
+  DEFAULT
+),(
+  '923eeeed-42bf-4236-9cc9-dbf4d12597da',
+  'Son',
+  '78abae0e-3c5a-488e-ac48-8d9842d704f0',
+  '2023-08-14 05:01:19.575',
+  '2023-08-14 05:01:19.575',
+  DEFAULT
+) RETURNING "id","deleted_at";
+
+
+
+INSERT INTO "role_users" (
+  "role_id",
+  "user_id"
+) VALUES (
+  'f8838633-dd0a-45ae-b96c-c2aab514116f',
+  'bedf6d44-b54a-4ecb-a308-3b120d50cdc8'
+),(
+  '923eeeed-42bf-4236-9cc9-dbf4d12597da',
+  'bfd4d0d3-535c-4fdf-bdf4-4213e98bfe83'
+) ON CONFLICT DO NOTHING RETURNING "role_id","user_id";
+
+
+
+INSERT INTO "boards" (
+  "id",
+  "title",
+  "owner_org_id",
+  "created_at",
+  "updated_at",
+  "deleted_at"
+) VALUES (
+  '5e1ab8cf-ac4f-4876-85e6-181f21ab2052',
+  'life',
+  '78abae0e-3c5a-488e-ac48-8d9842d704f0',
+  '2023-08-14 05:01:19.715',
+  '2023-08-14 05:01:19.715',
+  DEFAULT
+) RETURNING "id","deleted_at";
+
+
+
+INSERT INTO "panels" (
+  "id",
+  "title",
+  "board_id",
+  "created_at",
+  "updated_at",
+  "deleted_at"
+) VALUES (
+  'd8ae3f5d-ab75-4812-8077-ad76b40b4ee3',
+  'food',
+  '5e1ab8cf-ac4f-4876-85e6-181f21ab2052',
+  '2023-08-14 05:01:19.739',
+  '2023-08-14 05:01:19.739',
+  DEFAULT
+),(
+  'f2f16a38-745a-4690-b8c5-9908aa8c20e1',
+  'clothes',
+  '5e1ab8cf-ac4f-4876-85e6-181f21ab2052',
+  '2023-08-14 05:01:19.739',
+  '2023-08-14 05:01:19.739',
+  DEFAULT
+),(
+  '3855d43e-d0be-45d1-8623-694e70dee737',
+  'house',
+  '5e1ab8cf-ac4f-4876-85e6-181f21ab2052',
+  '2023-08-14 05:01:19.739',
+  '2023-08-14 05:01:19.739',
+  DEFAULT
+) RETURNING "id","deleted_at";
+
+
+
+INSERT INTO "cards" (
+  "id",
+  "title",
+  "description",
+  "panel_id",
+  "created_at",
+  "updated_at",
+  "deleted_at"
+) VALUES (
+  '69920df7-dc7a-4eec-9efe-dbd6aeca3433',
+  'FOO',
+  'foo',
+  'd8ae3f5d-ab75-4812-8077-ad76b40b4ee3',
+  '2023-08-14 05:01:19.742',
+  '2023-08-14 05:01:19.742',
+  DEFAULT
+),(
+  'cd21ad0a-c785-4779-bd15-afde4897956c',
+  'BAR',
+  'bar',
+  'd8ae3f5d-ab75-4812-8077-ad76b40b4ee3',
+  '2023-08-14 05:01:19.742',
+  '2023-08-14 05:01:19.742',
+  DEFAULT
+),(
+  '57fa7905-e725-41b8-bef8-e99d35d5b7ca',
+  'BAZ',
+  'baz',
+  'd8ae3f5d-ab75-4812-8077-ad76b40b4ee3',
+  '2023-08-14 05:01:19.742',
+  '2023-08-14 05:01:19.742',
+  DEFAULT
+),(
+  'e7b2a1a3-2e9d-4a2e-a53d-bf288ea8db88',
+  'QUX',
+  'qux',
+  'f2f16a38-745a-4690-b8c5-9908aa8c20e1',
+  '2023-08-14 05:01:19.742',
+  '2023-08-14 05:01:19.742',
+  DEFAULT
+),(
+  'e8de5b0d-4544-4471-b663-8c2868cb5478',
+  'QUUX',
+  'quux',
+  'f2f16a38-745a-4690-b8c5-9908aa8c20e1',
+  '2023-08-14 05:01:19.742',
+  '2023-08-14 05:01:19.742',
+  DEFAULT
+),(
+  '3ea015d2-f361-48f0-b98a-c5de9f5ae046',
+  'CORGE',
+  'corge',
+  'f2f16a38-745a-4690-b8c5-9908aa8c20e1',
+  '2023-08-14 05:01:19.742',
+  '2023-08-14 05:01:19.742',
+  DEFAULT
+),(
+  '162522c2-6a57-40ba-8c64-8c407bff7fbc',
+  'GRAULT',
+  'grault',
+  '3855d43e-d0be-45d1-8623-694e70dee737',
+  '2023-08-14 05:01:19.742',
+  '2023-08-14 05:01:19.742',
+  DEFAULT
+),(
+  'e82a0943-8ca6-4f46-a3d5-a82d25ae929c',
+  'GARPLY',
+  'garply',
+  '3855d43e-d0be-45d1-8623-694e70dee737',
+  '2023-08-14 05:01:19.742',
+  '2023-08-14 05:01:19.742',
+  DEFAULT
+),(
+  '4fad6a10-45a0-4b40-93ef-9bc60be677d1',
+  'WALDO',
+  'waldo',
+  '3855d43e-d0be-45d1-8623-694e70dee737',
+  '2023-08-14 05:01:19.742',
+  '2023-08-14 05:01:19.742',
+  DEFAULT
+) ON CONFLICT ("id") DO UPDATE SET "panel_id"="excluded"."panel_id" RETURNING "id","deleted_at";
+
+
+
+INSERT INTO "tags" (
+  "id",
+  "name",
+  "board_id",
+  "created_at",
+  "updated_at",
+  "deleted_at"
+) VALUES (
+  'fa417df1-aa5f-4522-88d2-26f6c411b6c2',
+  'spring',
+  '5e1ab8cf-ac4f-4876-85e6-181f21ab2052',
+  '2023-08-14 05:01:19.723',
+  '2023-08-14 05:01:19.723',
+  DEFAULT
+),(
+  '5f40052a-9798-46fd-ba33-57d1d49f0bb9',
+  'summer',
+  '5e1ab8cf-ac4f-4876-85e6-181f21ab2052',
+  '2023-08-14 05:01:19.723',
+  '2023-08-14 05:01:19.723',
+  DEFAULT
+),(
+  'd2ddfaad-c6da-4872-b0bf-39bca1076fae',
+  'festival',
+  '5e1ab8cf-ac4f-4876-85e6-181f21ab2052',
+  '2023-08-14 05:01:19.723',
+  '2023-08-14 05:01:19.723',
+  DEFAULT
+),(
+  '4eba92ba-88f1-45bc-a3b7-89fc7bd5e01e',
+  'trip',
+  '5e1ab8cf-ac4f-4876-85e6-181f21ab2052',
+  '2023-08-14 05:01:19.723',
+  '2023-08-14 05:01:19.723',
+  DEFAULT
+) ON CONFLICT ("id") DO UPDATE SET "board_id"="excluded"."board_id" RETURNING "id","deleted_at";
+
+
+
+INSERT INTO "card_tags" (
+  "card_id",
+  "tag_id"
+) VALUES (
+  '69920df7-dc7a-4eec-9efe-dbd6aeca3433',
+  '4eba92ba-88f1-45bc-a3b7-89fc7bd5e01e'
+),(
+  'e7b2a1a3-2e9d-4a2e-a53d-bf288ea8db88',
+  '5f40052a-9798-46fd-ba33-57d1d49f0bb9'
+),(
+  'e7b2a1a3-2e9d-4a2e-a53d-bf288ea8db88',
+  'd2ddfaad-c6da-4872-b0bf-39bca1076fae'
+),(
+  '162522c2-6a57-40ba-8c64-8c407bff7fbc',
+  'fa417df1-aa5f-4522-88d2-26f6c411b6c2'
+) ON CONFLICT DO NOTHING RETURNING "card_id","tag_id";
+
+
+
+INSERT INTO "comments" (
+  "id",
+  "content",
+  "user_id",
+  "card_id",
+  "created_at",
+  "updated_at",
+  "deleted_at"
+) VALUES (
+  '9db3f227-e9d2-4820-84d2-ef5542954c25',
+  'hello, revolcane!',
+  'bedf6d44-b54a-4ecb-a308-3b120d50cdc8',
+  'e8de5b0d-4544-4471-b663-8c2868cb5478',
+  '2023-08-14 05:01:19.75',
+  '2023-08-14 05:01:19.75',
+  DEFAULT
+),(
+  '64b9f7d6-263f-4468-a439-3b718fa70ae1',
+  'good evening',
+  'bfd4d0d3-535c-4fdf-bdf4-4213e98bfe83',
+  'e8de5b0d-4544-4471-b663-8c2868cb5478',
+  '2023-08-14 05:01:19.75',
+  '2023-08-14 05:01:19.75',
+  DEFAULT
+),(
+  '209ddf77-e216-4868-b852-e1b31cf5ea16',
+  'my memo',
+  'bfd4d0d3-535c-4fdf-bdf4-4213e98bfe83',
+  '162522c2-6a57-40ba-8c64-8c407bff7fbc',
+  '2023-08-14 05:01:19.75',
+  '2023-08-14 05:01:19.75',
+  DEFAULT
+) ON CONFLICT ("id") DO UPDATE SET "card_id"="excluded"."card_id" RETURNING "id","deleted_at";

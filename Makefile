@@ -1,3 +1,4 @@
+include database/Makefile
 
 .PHONY: run
 

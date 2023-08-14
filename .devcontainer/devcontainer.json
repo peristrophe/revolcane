@@ -18,6 +18,12 @@
 			]
 		}
 	},
+	"runArgs": ["--net=revolcane_network"],
+	"remoteEnv": {
+		"PGHOST": "172.56.57.100",
+		"PGUSER": "test",
+		"PGPASSWORD": "test"
+	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
