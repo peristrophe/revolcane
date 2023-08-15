@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS "users" (
     "name"         text NOT NULL,
     "birthday"     timestamptz DEFAULT null,
     "location"     text DEFAULT null,
-    "status"       bigint NOT NULL,
+    "status"       integer NOT NULL,
     "created_at"   timestamptz NOT NULL,
     "updated_at"   timestamptz NOT NULL,
     "deleted_at"   timestamptz DEFAULT null,

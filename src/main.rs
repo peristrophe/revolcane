@@ -3,11 +3,10 @@ use axum::{
     routing::get,
     Router,
 };
-use uuid::Uuid;
-use chrono::{prelude::{DateTime, Utc}, TimeZone};
-
 use std::net::SocketAddr;
-use serde::Serialize;
+
+mod models;
+use models::user::User;
 
 #[tokio::main]
 async fn main() {
@@ -18,22 +17,17 @@ async fn main() {
     axum::Server::bind(&addr).serve(app.into_make_service()).await.unwrap();
 }
 
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
-struct User {
-    id: Uuid,
-    name: String,
-    created_at: DateTime<Utc>,
-    updated_at: DateTime<Utc>,
-}
+async fn handler() -> Json<Vec<User>> {
+    let sdn = "postgres://test:test@172.56.57.100:5432/revolcane";
 
-async fn handler() -> Json<User> {
-    let datetime = Utc.with_ymd_and_hms(2023, 8, 6, 0, 0, 0).unwrap();
-    let user = User {
-        id: Uuid::new_v4(),
-        name: String::from("hoge"),
-        created_at: datetime,
-        updated_at: datetime,
-    };
-    Json(user)
+    let pool = sqlx::postgres::PgPoolOptions::new()
+        .max_connections(20)
+        .connect(sdn)
+        .await.unwrap();
+
+    let users = sqlx::query_as::<_, User>("SELECT * FROM users")
+        .fetch_all(&pool)
+        .await.unwrap();
+
+    Json(users)
 }
