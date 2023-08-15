@@ -4,9 +4,21 @@ use axum::{
     Router,
 };
 use std::net::SocketAddr;
+use once_cell::sync::Lazy;
 
 mod models;
 use models::user::User;
+
+mod repositories;
+use repositories::database::Config;
+
+static CONFIG: Lazy<Config> = Lazy::new(|| Config {
+    postgres_host: std::env::var("DB_HOST").unwrap(),
+    postgres_port: std::env::var("DB_PORT").unwrap(),
+    postgres_user: std::env::var("DB_USER").unwrap(),
+    postgres_password: std::env::var("DB_PASSWORD").unwrap(),
+    postgres_database: std::env::var("DB_NAME").unwrap(),
+});
 
 #[tokio::main]
 async fn main() {
@@ -18,11 +30,9 @@ async fn main() {
 }
 
 async fn handler() -> Json<Vec<User>> {
-    let dsn = "postgres://test:test@172.56.57.100:5432/revolcane";
-
     let pool = sqlx::postgres::PgPoolOptions::new()
         .max_connections(20)
-        .connect(dsn)
+        .connect(&CONFIG.to_dsn())
         .await.unwrap();
 
     let users = sqlx::query_as::<_, User>("SELECT * FROM users")
