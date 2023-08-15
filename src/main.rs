@@ -18,11 +18,11 @@ async fn main() {
 }
 
 async fn handler() -> Json<Vec<User>> {
-    let sdn = "postgres://test:test@172.56.57.100:5432/revolcane";
+    let dsn = "postgres://test:test@172.56.57.100:5432/revolcane";
 
     let pool = sqlx::postgres::PgPoolOptions::new()
         .max_connections(20)
-        .connect(sdn)
+        .connect(dsn)
         .await.unwrap();
 
     let users = sqlx::query_as::<_, User>("SELECT * FROM users")
