@@ -1,4 +1,4 @@
-include database/Makefile
+include persistence/Makefile
 
 .PHONY: run
 

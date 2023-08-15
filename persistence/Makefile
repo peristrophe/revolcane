@@ -31,7 +31,7 @@ postgres-init:
 		psql service=init-dev < ./init.dcl && \
 		psql service=dev < ./init.ddl && \
 		psql service=dev < ./init.dml
-	-test -f ./database/init.dcl && \
-		psql service=init-dev < ./database/init.dcl && \
-		psql service=dev < ./database/init.ddl && \
-		psql service=dev < ./database/init.dml
+	-test -f ./persistence/init.dcl && \
+		psql service=init-dev < ./persistence/init.dcl && \
+		psql service=dev < ./persistence/init.ddl && \
+		psql service=dev < ./persistence/init.dml
