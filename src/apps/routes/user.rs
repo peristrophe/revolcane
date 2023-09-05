@@ -6,6 +6,7 @@ use axum::{
 };
 use uuid::Uuid;
 
+use crate::apps::controllers::user::UserController;
 use crate::adapters::repository::Repository;
 use crate::models::user::User;
 
@@ -22,9 +23,8 @@ async fn list_users_handler() -> Json<Vec<User>> {
     Json(users)
 }
 
-async fn get_user_handler(Path(params): Path<Uuid>) -> Json<User> {
-    let user_id = params;
-    let repository = Repository::new().await;
-    let user = repository.get_user(user_id).await.unwrap();
+async fn get_user_handler(Path(user_id): Path<Uuid>) -> Json<User> {
+    let controller = UserController::new().await;
+    let user = controller.user_detail_view(user_id).await;
     Json(user)
 }
