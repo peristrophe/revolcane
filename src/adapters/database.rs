@@ -7,6 +7,16 @@ pub struct Config {
 }
 
 impl Config {
+    pub fn new() -> Config {
+        Config {
+            postgres_host: std::env::var("DB_HOST").unwrap(),
+            postgres_port: std::env::var("DB_PORT").unwrap(),
+            postgres_user: std::env::var("DB_USER").unwrap(),
+            postgres_password: std::env::var("DB_PASSWORD").unwrap(),
+            postgres_database: std::env::var("DB_NAME").unwrap(),
+        }
+    }
+
     pub fn to_dsn(&self) -> String {
         format!(
             "postgres://{}:{}@{}:{}/{}",
